@@ -195,7 +195,7 @@ while (!$Process.HasExited)
 
 $endTime = Get-Date
 
-$delta = $afterLaunchTime - $startTime
+$delta = $endTime - $afterLaunchTime
 
 Write-Host 
 Write-Host -ForegroundColor Green "Fix installation completed."
