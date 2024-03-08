@@ -17,6 +17,9 @@
    This script identifies and stops/restarts Services to reduce the patch install time for SharePoint Server Subscription Edition Cumlative Update.
    As input parameter it takes the path to the SharePoint patch to be installed and 
    whether a graceful shutdown of the distributed cache on the current server should be performed if the current machine hosts the distributed cache service
+
+   Reference: https://blog.stefan-gossner.com/2024/03/08/solving-the-extended-install-time-for-spse-cus/
+
 #>
 
 #Requires -RunAsAdministrator
