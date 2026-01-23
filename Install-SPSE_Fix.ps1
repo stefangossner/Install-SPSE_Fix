@@ -1,4 +1,4 @@
-﻿<#
+<#
  This Sample Code is provided for the purpose of illustration only and is not intended to be used in a production environment.  
  THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, 
  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
@@ -20,6 +20,10 @@
 
    Reference: https://blog.stefan-gossner.com/2024/03/08/solving-the-extended-install-time-for-spse-cus/
 
+   Version History:
+    1.0 - initial version
+    1.1 - add error detection to detect installation failures and some common errors
+
 #>
 
 #Requires -RunAsAdministrator
@@ -38,6 +42,33 @@ if (!$CULocation.ToLower().EndsWith(".exe") -or ![System.IO.File]::Exists($CULoc
     Write-Host -ForegroundColor Yellow "Please specify the path of the SharePoint Server Subscription Edition Update fix (e.g. C:\temp\uber-subscription-kb5002560-fullfile-x64-glb.exe)"
     Exit
 }
+
+# List of common patch installation errors
+$ErrorMap = @{
+  
+    -1    = 'The installation of the patch failed.'
+    17300 = 'An error has occurred during the installation of this fix.'
+    17301 = 'The detection failed, this can be due to a corrupted installation database.'
+    17302 = 'The installation of the patch failed.'
+    17303 = 'An error has occurred while extracting the files from this package.'
+
+    17021 = 'An error has occurred during the installation of this fix.'
+    17022 = 'A reboot is required to complete the installation of the fix.'
+    17023 = 'The installation of this package was cancelled.'
+    17028 = 'There are no products affected by this package installed on this system.'
+    17030 = 'The detection failed, this can be due to a corrupted installation database.'
+}
+
+function Get-ExitMessage {
+    param($Code)
+
+    if ($ErrorMap.ContainsKey($Code)) {
+        return $ErrorMap[$Code] + " (ExitCode: $Code)"
+    }
+
+    return "An Error has occurred during the installation. (ExitCode: $Code)"
+}
+
 
 $MachineName = $env:COMPUTERNAME
 
@@ -200,11 +231,20 @@ $endTime = Get-Date
 
 $delta = $endTime - $afterLaunchTime
 
-Write-Host 
-Write-Host -ForegroundColor Green "Fix installation completed."
-Write-Host -ForegroundColor Green "Time taken to install fix: " $delta.Minutes "Minutes," $delta.Seconds "Seconds"
-Write-Host 
-
+# check if the installation succeeded and report back
+if ($Process.ExitCode -eq 0)
+{
+    Write-Host 
+    Write-Host -ForegroundColor Green "Fix installation completed."
+    Write-Host -ForegroundColor Green "Time taken to install fix: " $delta.Minutes "Minutes," $delta.Seconds "Seconds"
+    Write-Host
+}
+else
+{
+    Write-Host 
+    Write-Host -ForegroundColor Red $(Get-ExitMessage $Process.ExitCode)
+    Write-Host
+}
 
 # get services again to get current status
 $srvSPTimerv4 = Get-Service "SPTimerV4"
@@ -277,4 +317,3 @@ if ($srvSPTimerv4.Status -ne "Running")
 
 Write-Host 
 Write-Host -ForegroundColor Green "Service restart completed."
-
