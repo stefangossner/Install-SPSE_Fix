@@ -1,4 +1,4 @@
-<#
+﻿<#
  This Sample Code is provided for the purpose of illustration only and is not intended to be used in a production environment.  
  THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, 
  INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.  
@@ -55,8 +55,10 @@ $ErrorMap = @{
     17021 = 'An error has occurred during the installation of this fix.'
     17022 = 'A reboot is required to complete the installation of the fix.'
     17023 = 'The installation of this package was cancelled.'
+    17025 = 'The update is already installed on this system.'
     17028 = 'There are no products affected by this package installed on this system.'
     17030 = 'The detection failed, this can be due to a corrupted installation database.'
+    17032 = 'Insufficient disk space to install the fix.'
 }
 
 function Get-ExitMessage {
