@@ -26,6 +26,7 @@
     1.2 - add handling of exit code 17022 which indicates that the installation succeeded but a reboot is required to complete the installation
     1.3 - quick fix of elseif statement
     1.4 - allow server relative paths
+    1.5 - fix incorrect if condition for restarting OSearch16 service at the end of the script
 
 #>
 
@@ -295,7 +296,7 @@ if ($srvSPSearchHostController.Status -ne "Running" -and $restartSPSearchHostCon
     $srvSPSearchHostController.WaitForStatus("Running")
 }
 
-if ($srvOSearch16.Status -eq "Running" -and $restartOSearch16)
+if ($srvOSearch16.Status -ne "Running" -and $restartOSearch16)
 {
     Write-Host "Start OSearch16 service..."
     $srvOSearch16.Start()
