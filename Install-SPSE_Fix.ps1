@@ -24,6 +24,7 @@
     1.0 - initial version
     1.1 - add error detection to detect installation failures and some common errors
     1.2 - add handling of exit code 17022 which indicates that the installation succeeded but a reboot is required to complete the installation
+    1.3 - quick fix of elseif statement
 
 #>
 
@@ -242,7 +243,7 @@ if ($Process.ExitCode -eq 0)
     Write-Host -ForegroundColor Green "Time taken to install fix: " $delta.Minutes "Minutes," $delta.Seconds "Seconds"
     Write-Host
 }
-else if ($Process.ExitCode -eq 17022)
+elseif ($Process.ExitCode -eq 17022)
 {
     Write-Host 
     Write-Host -ForegroundColor Yellow "Fix installation completed but a reboot is required to complete the installation. Please reboot the server as soon as possible."
