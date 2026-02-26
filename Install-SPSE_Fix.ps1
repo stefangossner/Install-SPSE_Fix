@@ -25,6 +25,7 @@
     1.1 - add error detection to detect installation failures and some common errors
     1.2 - add handling of exit code 17022 which indicates that the installation succeeded but a reboot is required to complete the installation
     1.3 - quick fix of elseif statement
+    1.4 - allow server relative paths
 
 #>
 
@@ -38,6 +39,9 @@ param (
     [Parameter(Mandatory=$false)]
     [bool]$ShouldGracefulStopDCache = $false
 )
+
+# allow relative paths to work
+$CULocation = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PWD, $CULocation))
 
 if (!$CULocation.ToLower().EndsWith(".exe") -or ![System.IO.File]::Exists($CULocation))
 {
