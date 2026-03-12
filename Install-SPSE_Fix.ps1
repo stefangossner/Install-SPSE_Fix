@@ -252,7 +252,7 @@ if ($Process.ExitCode -eq 0)
 elseif ($Process.ExitCode -eq 17022)
 {
     Write-Host 
-    Write-Host -ForegroundColor Yellow "Fix installation completed, but a reboot is required to complete the installation.`nPlease reboot the server as soon as possible."
+    Write-Host -ForegroundColor Yellow "Fix installation completed, but a reboot is required to complete the installation.`nPlease reboot the server as soon as possible.`n"
     Write-Host -ForegroundColor Yellow "Time taken to install fix: " $delta.Minutes "Minutes," $delta.Seconds "Seconds"
     Write-Host
 }
