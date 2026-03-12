@@ -27,6 +27,7 @@
     1.3 - quick fix of elseif statement
     1.4 - allow server relative paths
     1.5 - fix incorrect if condition for restarting OSearch16 service at the end of the script
+    1.6 - add line break after fix installation has been initiated message for better readability of the output
 
 #>
 
@@ -251,7 +252,7 @@ if ($Process.ExitCode -eq 0)
 elseif ($Process.ExitCode -eq 17022)
 {
     Write-Host 
-    Write-Host -ForegroundColor Yellow "Fix installation completed but a reboot is required to complete the installation. Please reboot the server as soon as possible."
+    Write-Host -ForegroundColor Yellow "Fix installation completed, but a reboot is required to complete the installation.`nPlease reboot the server as soon as possible."
     Write-Host -ForegroundColor Yellow "Time taken to install fix: " $delta.Minutes "Minutes," $delta.Seconds "Seconds"
     Write-Host
 }
