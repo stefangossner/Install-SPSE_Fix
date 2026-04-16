@@ -42,6 +42,31 @@ param (
     [bool]$ShouldGracefulStopDCache = $false
 )
 
+$GroupName = "WSS_WPG"
+$SystemSID  = "S-1-5-18"
+
+try {
+    $Members = Get-LocalGroupMember -Group $GroupName -ErrorAction Stop
+    
+    $IsMember = $Members | Where-Object { $_.SID -eq $SystemSID }
+
+    if ($IsMember) {
+        Write-Host "❌ SYSTEM is a member of '$GroupName'" -ForegroundColor Red
+        break
+    }
+    else {
+        Write-Host "✅ SYSTEM (S-1-5-18) is not a member of '$GroupName'" -ForegroundColor Green
+    }
+}
+catch {
+    Write-Host "❌ Error checking group membership: $($_.Exception.Message)" -ForegroundColor Red
+    Exit 1
+}
+
+
+
+
+
 # allow relative paths to work
 $CULocation = [System.IO.Path]::GetFullPath([System.IO.Path]::Combine($PWD, $CULocation))
 
