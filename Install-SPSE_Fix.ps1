@@ -61,6 +61,7 @@ try {
 }
 catch {
     Write-Host "❌ Error checking group membership: $($_.Exception.Message)" -ForegroundColor Red
+    Exit 1
 }
 
 
